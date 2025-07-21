@@ -1,0 +1,128 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Checkout - My Store{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary fw-bold">Checkout</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger text-center">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if messages %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% for message in messages %}
+    <script>
+        window.onload = function () {
+            Swal.fire({
+                icon: "success",
+                title: "Order Placed!",
+                text: "{{ message }}",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = "{% url 'product_list' %}";
+            });
+        };
+    </script>
+    {% endfor %}
+    {% endif %}
+
+    <!-- ✅ Styled Cart Table -->
+    <div class="table-responsive my-4">
+        <table class="table table-bordered table-dark text-center">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td class="fw-bold">{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>Rs {{ item.product.price }}</td>
+                    <td>Rs {{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+    <td colspan="3" class="text-end"><strong>Grand Total:</strong></td>
+    <td><strong>Rs {{ grand_total }}</strong></td>
+</tr>
+            </tbody>
+        </table>
+    </div>
+
+<!-- ✅ Checkout Form -->
+<div class="card p-4 shadow-lg bg-dark text-light">
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- ✅ Shipping Address -->
+        <div class="mb-3">
+            <label for="address" class="form-label fw-bold">Shipping Address:</label>
+            <input type="text" name="address" id="address" class="form-control" placeholder="Enter your address" required>
+        </div>
+
+        {% if single_purchase and cart_items %}
+            <!-- ✅ Hidden Inputs for Single Product Purchase -->
+            <input type="hidden" name="single_purchase" value="true">
+            <input type="hidden" name="single_product_id" value="{{ cart_items.0.product.id }}">
+        {% endif %}
+
+        <!-- ✅ Stripe Payment Button (Only Option) -->
+        <div class="text-center">
+            <button type="button" class="btn btn-primary px-5 py-2 fw-bold mt-2" id="stripe-payment">
+                <i class="bi bi-credit-card"></i> Pay with Stripe
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- ✅ Include Stripe SDK -->
+<script src="https://js.stripe.com/v3/"></script>
+<!-- ✅ Include Stripe SDK -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.getElementById("stripe-payment").addEventListener("click", function () {
+        let address = document.getElementById("address").value.trim();
+
+        if (!address) {
+            alert("Please enter your shipping address before proceeding.");
+            return;
+        }
+
+        // ✅ Correctly parse product IDs as a valid JavaScript array
+        let productIds = JSON.parse('{{ product_ids_json|escapejs }}');
+
+        fetch("{% url 'create_stripe_checkout_session' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                address: address, 
+                product_ids: productIds  // ✅ Send all product IDs to Stripe
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                alert("Error creating Stripe session.");
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock %}

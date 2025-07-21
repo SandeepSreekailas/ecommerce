@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Store{% endblock %}</title>
+
+    <!-- ✅ Favicons -->
+    <link href="{% static 'images/favicon.png' %}" rel="icon">
+    <link href="{% static 'images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- ✅ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ✅ Bootstrap & CSS Files -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- ✅ Vendor CSS -->
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="index-page">
+    <header id="header" class="header">
+        <div class="header-container container-fluid container-xl">
+
+            <a href="{% url 'home' %}" class="logo">
+                <h1 class="sitename">My Store</h1>
+            </a>
+            
+
+    <!-- ✅ Header (Navbar) -->
+    <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.view_name == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}" class="{% if request.resolver_match.view_name == 'product_list' %}active{% endif %}">Products</a></li>
+    
+            {% if request.resolver_match.view_name != 'home' %}
+                <li>
+                    <a href="{% url 'cart_view' %}" class="cart-link">
+                        <i class="bi bi-cart3"></i> Cart
+                        <!-- {% if user.is_authenticated and cart_items_count > 0 %}
+                            <span class="cart-count">{{ cart_items_count }}</span>
+                        {% endif %} -->
+                    </a>
+                </li>
+            {% endif %}
+    
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-logout">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+
+            
+        </div>
+        
+    </header>
+
+    <!-- ✅ Page-Specific Content (Will be filled by child templates) -->
+    <main class="main">
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+
+    <!-- ✅ Footer -->
+    {% include 'store/footer.html' %}
+
+    <!-- ✅ Scroll to Top Button -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <!-- ✅ JS Files -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

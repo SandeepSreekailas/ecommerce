@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <style>
+        /* ✅ General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* ✅ Centered Container */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 15px;
+            font-size: 26px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* ✅ Form Styling */
+        .form-box {
+            width: 100%;
+        }
+
+        .form-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #222;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .form-box input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        /* ✅ Buttons */
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #388E3C;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        /* ✅ Back to Products Link */
+        .back-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+            color: #32a852;
+        }
+
+    </style>
+
+    <!-- ✅ Improved Alert Handling -->
+    {% if messages %}
+    {% for message in messages %}
+        <script>
+            window.onload = function() {
+                alert("{{ message }}");  // ✅ Show each message in an alert
+                window.location.href = "{% url 'product_list' %}";  // ✅ Redirect after showing alerts
+            };
+        </script>
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+
+    <div class="container">
+        <h2>User Profile</h2>
+        <div class="form-box">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Update Profile</button>
+            </form>
+            <p class="back-link"><a href="{% url 'product_list' %}">← Back to Products</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

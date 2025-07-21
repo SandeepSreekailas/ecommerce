@@ -1,0 +1,95 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart - My Store{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary fw-bold">Shopping Cart 🛒</h2>
+
+    <div class="card p-4 shadow-lg bg-dark text-light">
+        {% if cart_items %}
+            <!-- ✅ Styled Cart Table -->
+            <div class="table-responsive my-4">
+                <table class="table table-bordered table-hover table-dark text-center">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                            <th>Buy Now</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td class="fw-bold">{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>Rs {{ item.total_price }}</td>
+
+                            <td>
+                                <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Remove
+                                </a>
+                            </td>
+                            <td>
+                                <form method="POST" action="{% url 'checkout_single' item.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="single_product_id" value="{{ item.product.id }}">
+                                    <button type="submit" class="btn btn-warning btn-sm buy-now-btn">
+                                        <i class="bi bi-lightning"></i> Buy Now
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ✅ Action Buttons -->
+            <div class="d-flex justify-content-between flex-wrap gap-2">
+                <a href="{% url 'clear_cart' %}" class="btn btn-warning fw-bold px-3">
+                    <i class="bi bi-x-circle"></i> Clear Cart
+                </a>
+                <a href="{% url 'checkout' %}" class="btn btn-success fw-bold px-3">
+                    <i class="bi bi-bag-check"></i> Proceed to Checkout
+                </a>
+            </div>
+
+        {% else %}
+            <p class="text-center text-light fs-5">Your cart is empty. 😔</p>
+        {% endif %}
+
+        <br>
+        <div class="text-center">
+            <a href="{% url 'product_list' %}" class="btn btn-primary fw-bold px-3">
+                <i class="bi bi-arrow-left-circle"></i> Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ✅ Improve Button Styling */
+    .buy-now-btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    /* ✅ Make Buttons Responsive */
+    @media (max-width: 768px) {
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Products - My Store{% endblock %}
+
+{% block content %}
+
+<div class="page-dark-theme">
+    <br>
+
+<!-- ✅ Centered Search Bar -->
+<div class="search-wrapper my-4">
+    <form method="GET" action="{% url 'product_list' %}" class="search-form">
+        <div class="search-input-wrapper">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" name="q" value="{{ query }}" placeholder="Search for products..."
+                   class="search-input" autocomplete="off">
+        </div>
+    </form>
+</div>
+
+
+<style>
+
+/* === Nike Style Layout === */
+
+.page-dark-theme {
+    background-color: #111;
+    color: #fff;
+    font-family: 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+}
+
+/* ✅ Search bar */
+.search-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.search-form {
+    width: 60%;
+    max-width: 600px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border-radius: 50px;
+    border: none;
+    background-color: #1c1c1c;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s ease;
+    border: 1px solid #333;
+}
+
+.search-input::placeholder {
+    color: #888;
+}
+
+.search-input:focus {
+    border-color: #00e676;
+    background-color: #222;
+}
+
+
+/* ✅ Product Grid */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 40px 20px;
+}
+
+/* ✅ Product Card */
+.product {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.product:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+}
+
+/* ✅ Image Focus */
+.product img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product:hover img {
+    transform: scale(1.05);
+}
+
+/* ✅ Product Content */
+.product-info {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #fff;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+
+.product-price {
+    font-weight: 600;
+    color: #00e676;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+/* ✅ Button */
+.add-to-cart {
+    display: inline-block;
+    text-align: center;
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background-color: #e6e6e6;
+}
+</style>
+
+
+
+
+
+
+<!-- ✅ Page Heading -->
+<h1 class="text-center my-4 text-primary fw-bold">Product List</h1>
+
+<!-- ✅ Product Grid -->
+<div class="product-container">
+    {% for product in products %}
+        <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="product-info">
+                <h4>{{ product.name }}</h4>
+                <p class="product-description">{{ product.description|truncatechars:70 }}</p>
+                <p class="product-price">Rs {{ product.price }}</p>
+                <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Add to Cart</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+</div>
+{% endblock %}

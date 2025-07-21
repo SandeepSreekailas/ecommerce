@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        /* ✅ General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ✅ Centered Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* ✅ Form Styling */
+        .form-box {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            width: 300px;
+            text-align: left;
+        }
+
+        .form-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+
+        /* ✅ Buttons */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #388E3C;
+        }
+
+        /* ✅ Login Link */
+        .login-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-box">
+            <h2>Register</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Register</button>
+            </form>
+            <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
