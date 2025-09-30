@@ -34,7 +34,7 @@ SECRET_KEY = '@u8#@gxh%5^x91nbh2^c&o0(v-f3dc8mf(^70kg6=fc(%(f*(u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["ecommerce-8l3w.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
