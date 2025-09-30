@@ -14,7 +14,12 @@ import os
 from pathlib import Path
 
 
+from dotenv import load_dotenv
 
+load_dotenv()  # only needed if you're using python-dotenv
+
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
