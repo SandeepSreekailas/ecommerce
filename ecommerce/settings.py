@@ -57,7 +57,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -132,7 +136,7 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # ✅ Ensure this points to your static folder
+    os.path.join(BASE_DIR, 'store/static'),  # ✅ Ensure this points to your static folder
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
